@@ -1,13 +1,8 @@
-# vfc-bench
+# VFC Bench
 
-VFC benchmarking library.
+voice-function-call benchmark
 
-## Development
 
-```sh
-direnv allow          # or: nix develop
-pytest                # run tests
-python examples/basic_usage.py
-```
+## idea
 
-`PYTHONPATH` points at `src/`, so no install step is needed in the devshell.
+a benchmark that is flexible enough to compare different solutions between a spoken voice command to the function call
