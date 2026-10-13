@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vfc-bench"
+description = "VFC benchmarking library"
+readme = "README.md"
+requires-python = ">=3.11"
+dynamic = ["version"]
+dependencies = []
+
+[project.optional-dependencies]
+# Frontend deps go here once the UI exists -- never in [project.dependencies].
+ui = []
+
+[tool.hatch.version]
+path = "src/vfc_bench/__init__.py"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/vfc_bench"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
