@@ -3,6 +3,6 @@
     "file": "sample.mp3",
     "transcription": "ugh someone's gotta setup the heater in my bedroom before I'm home. It's freezing"
   },
-  "function-set": "smart-home"
+  "function-set": "smart-home",
   "expected-result": "The heater is turned on and at warm temperature at at least 21 degrees celcius"
 }
