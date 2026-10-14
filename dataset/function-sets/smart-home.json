@@ -1,0 +1,336 @@
+{
+  "heater_power_state": {
+    "args": {
+      "state": {
+        "type": "bool",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Turns the heater on or off."
+  },
+  "heater_set_temperature": {
+    "args": {
+      "value": {
+        "type": "float",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the target temperature of the heater, in the unit currently configured via heater_set_unit."
+  },
+  "heater_set_unit": {
+    "args": {
+      "unit": {
+        "type": "enum",
+        "options": ["celsius", "fahrenheit"],
+        "default": null
+      }
+    },
+    "description": "Sets the temperature unit used by the heating system."
+  },
+  "heater_set_mode": {
+    "args": {
+      "mode": {
+        "type": "enum",
+        "options": ["eco", "comfort", "boost", "schedule", "frost_protection"],
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the operating mode of the heater."
+  },
+  "ac_power_state": {
+    "args": {
+      "state": {
+        "type": "bool",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Turns the AC on or off."
+  },
+  "ac_set_temperature": {
+    "args": {
+      "value": {
+        "type": "float",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the target temperature of the AC, in the unit currently configured via heater_set_unit."
+  },
+  "ac_set_fan_speed": {
+    "args": {
+      "speed": {
+        "type": "enum",
+        "options": ["auto", "low", "medium", "high"],
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the fan speed of the AC."
+  },
+  "light_power_state": {
+    "args": {
+      "state": {
+        "type": "bool",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Turns the lights on or off."
+  },
+  "light_set_brightness": {
+    "args": {
+      "brightness": {
+        "type": "int",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the brightness of the lights, from 0 to 100 percent."
+  },
+  "light_set_color": {
+    "args": {
+      "color": {
+        "type": "str",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the color of the lights, as a color name or a hex code like #ff8800."
+  },
+  "light_set_color_temperature": {
+    "args": {
+      "kelvin": {
+        "type": "int",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the white color temperature of the lights in kelvin, from 2000 (warm) to 6500 (cold)."
+  },
+  "blinds_set_position": {
+    "args": {
+      "position": {
+        "type": "int",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Moves the blinds to a position, from 0 (fully closed) to 100 (fully open)."
+  },
+  "fan_power_state": {
+    "args": {
+      "state": {
+        "type": "bool",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Turns the fan on or off."
+  },
+  "fan_set_speed": {
+    "args": {
+      "speed": {
+        "type": "enum",
+        "options": ["low", "medium", "high"],
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the speed of the fan."
+  },
+  "humidifier_power_state": {
+    "args": {
+      "state": {
+        "type": "bool",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Turns the humidifier on or off."
+  },
+  "humidifier_set_humidity": {
+    "args": {
+      "humidity": {
+        "type": "int",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the target relative humidity in percent, from 30 to 70."
+  },
+  "media_playback_state": {
+    "args": {
+      "state": {
+        "type": "enum",
+        "options": ["play", "pause", "stop", "next", "previous"],
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Controls playback on the media player."
+  },
+  "media_set_volume": {
+    "args": {
+      "volume": {
+        "type": "int",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Sets the volume of the media player, from 0 to 100 percent."
+  },
+  "media_play_content": {
+    "args": {
+      "query": {
+        "type": "str",
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Plays the song, album, playlist, radio station or podcast matching the query."
+  },
+  "door_lock_state": {
+    "args": {
+      "locked": {
+        "type": "bool",
+        "default": null
+      },
+      "door": {
+        "type": "str",
+        "default": "front"
+      }
+    },
+    "description": "Locks or unlocks a door."
+  },
+  "alarm_system_set_state": {
+    "args": {
+      "state": {
+        "type": "enum",
+        "options": ["disarmed", "armed_home", "armed_away"],
+        "default": null
+      }
+    },
+    "description": "Arms or disarms the security alarm system."
+  },
+  "vacuum_set_state": {
+    "args": {
+      "state": {
+        "type": "enum",
+        "options": ["start", "pause", "stop", "return_to_dock"],
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Controls the robot vacuum. If a room is given, it cleans only that room."
+  },
+  "scene_activate": {
+    "args": {
+      "name": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Activates a predefined scene, for example 'movie night', 'good morning' or 'away'."
+  },
+  "timer_start": {
+    "args": {
+      "seconds": {
+        "type": "int",
+        "default": null
+      },
+      "label": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Starts a countdown timer."
+  },
+  "alarm_clock_set": {
+    "args": {
+      "time": {
+        "type": "str",
+        "default": null
+      },
+      "repeat_daily": {
+        "type": "bool",
+        "default": false
+      }
+    },
+    "description": "Sets an alarm clock for a time of day in 24h HH:MM format."
+  },
+  "sensor_read": {
+    "args": {
+      "sensor": {
+        "type": "enum",
+        "options": ["temperature", "humidity", "air_quality", "motion", "door_contact", "power_usage"],
+        "default": null
+      },
+      "room": {
+        "type": "str",
+        "default": null
+      }
+    },
+    "description": "Reads the current value of a sensor."
+  }
+}
