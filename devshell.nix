@@ -4,6 +4,8 @@ let
     # Runtime deps, mirroring [project.dependencies]
     # Dev deps
     ps.pytest
+    ps.python-dotenv # examples extra
+    ps.openai # examples extra
   ]);
 in
 pkgs.mkShell {

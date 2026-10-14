@@ -13,6 +13,8 @@ dependencies = []
 [project.optional-dependencies]
 # Frontend deps go here once the UI exists -- never in [project.dependencies].
 ui = []
+# Only the examples read a .env -- the library itself takes config as arguments.
+examples = ["python-dotenv>=1.0", "openai>=1.0"]
 
 [tool.hatch.version]
 path = "src/vfc_bench/__init__.py"
