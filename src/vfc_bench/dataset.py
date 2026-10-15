@@ -144,7 +144,9 @@ class TestCase:
     expected_result: str
 
     @classmethod
-    def _parse(cls, case_id: str, directory: Traversable, raw: dict[str, Any]) -> TestCase:
+    def _parse(
+        cls, case_id: str, directory: Traversable, raw: dict[str, Any]
+    ) -> TestCase:
         command = raw["voice-command"]
         file_name = command["file"]
         return cls(
