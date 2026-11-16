@@ -2,6 +2,14 @@
 
 __version__ = "0.1.0"
 
+from vfc_bench.calls import (
+    CallResult,
+    ParsedCall,
+    ParsedOutput,
+    execute_calls,
+    format_instructions,
+    parse_calls,
+)
 from vfc_bench.dataset import (
     CheckResult,
     Expectation,
@@ -16,58 +24,43 @@ from vfc_bench.environment import (
     Environment,
     ToolArg,
     ToolCallError,
+    ToolRejectedError,
+    ToolSchemaError,
     ToolSpec,
     diff,
 )
+from vfc_bench.runner import RunResult, run, run_case
+from vfc_bench.system import System, SystemOutput
+from vfc_bench.timing import StageTiming, Timing
 
 __all__ = [
     "ABSENT",
+    "CallResult",
     "CheckResult",
     "Environment",
     "Expectation",
+    "ParsedCall",
+    "ParsedOutput",
     "Recording",
+    "RunResult",
+    "StageTiming",
+    "System",
+    "SystemOutput",
     "TestCase",
+    "Timing",
     "ToolArg",
     "ToolCallError",
+    "ToolRejectedError",
+    "ToolSchemaError",
     "ToolSpec",
     "__version__",
     "diff",
+    "execute_calls",
+    "format_instructions",
     "list_test_cases",
     "load_test_case",
     "load_test_cases",
+    "parse_calls",
+    "run",
+    "run_case",
 ]
-
-
-import time
-
-
-class VfcBench:
-    def __init(self, data, functions, expected):
-        self.overall_time_ns = 0
-        self.transcribe_time_ns = 0
-        self.llm_step_time_ns = 0
-        self.data = data
-        self.functions = functions
-        self.expected = expected
-        self.scratch = ""
-
-    def run(self):
-        self.overall_time_ns = time.perf_counter_ns()
-        self.voice_to_function_call()
-        self.validate_schema()
-        self.overall_time_ns = time.perf_counter_ns() - self.overall_time_ns()
-
-    def voice_to_function_call(self):
-        self.transcribe_time_ns = time.perf_counter_ns()
-        self.transcribe()
-        self.transcribe_time_ns = time.perf_counter_ns() - self.transcribe_time_ns
-
-        self.llm_step_time_ns = time.perf_counter_ns()
-        self.llm_step()
-        self.llm_step_time_ns = time.perf_counter_ns() - self.llm_step_time_ns
-
-    def transcribe(self):
-        pass
-
-    def llm_step(self):
-        pass
