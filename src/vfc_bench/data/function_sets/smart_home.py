@@ -19,7 +19,7 @@ from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from vfc_bench.environment import Environment, ToolCallError
+from vfc_bench.environment import Environment, ToolRejectedError
 
 __all__ = [
     "AC",
@@ -159,7 +159,7 @@ def _named(items: Iterable[str] | Mapping[str, Any], factory: type) -> dict[str,
 
 def _in_range(name: str, value: float, low: float, high: float) -> None:
     if not low <= value <= high:
-        raise ToolCallError(f"{name} must be between {low} and {high}, got {value}")
+        raise ToolRejectedError(f"{name} must be between {low} and {high}, got {value}")
 
 
 class SmartHome(Environment[HomeState]):
@@ -195,7 +195,7 @@ class SmartHome(Environment[HomeState]):
     def _room(self, name: str) -> Room:
         room = self.state.rooms.get(_key(name))
         if room is None:
-            raise ToolCallError(
+            raise ToolRejectedError(
                 f"unknown room {name!r}; known: {sorted(self.state.rooms)}"
             )
         return room
@@ -333,7 +333,7 @@ class SmartHome(Environment[HomeState]):
         """Locks or unlocks a door."""
         target = self.state.doors.get(_key(door))
         if target is None:
-            raise ToolCallError(
+            raise ToolRejectedError(
                 f"unknown door {door!r}; known: {sorted(self.state.doors)}"
             )
         target.locked = locked
@@ -367,7 +367,7 @@ class SmartHome(Environment[HomeState]):
     def scene_activate(self, name: str) -> None:
         """Activates a predefined scene, for example 'movie night', 'good morning' or 'away'."""
         if _key(name) not in self.state.scenes:
-            raise ToolCallError(
+            raise ToolRejectedError(
                 f"unknown scene {name!r}; known: {list(self.state.scenes)}"
             )
         self.state.active_scene = _key(name)
@@ -380,7 +380,7 @@ class SmartHome(Environment[HomeState]):
     def alarm_clock_set(self, time: str, repeat_daily: bool = False) -> None:
         """Sets an alarm clock for a time of day in 24h HH:MM format."""
         if not re.fullmatch(r"([01]\d|2[0-3]):[0-5]\d", time):
-            raise ToolCallError(f"time must be HH:MM in 24h format, got {time!r}")
+            raise ToolRejectedError(f"time must be HH:MM in 24h format, got {time!r}")
         self.state.alarm_clocks.append(AlarmClock(time=time, repeat_daily=repeat_daily))
 
     def sensor_read(

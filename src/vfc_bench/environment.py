@@ -22,7 +22,8 @@ docstring is the description. Supported argument types are ``bool``, ``int``,
 ``float``, ``str``, ``Literal`` of one of those, and ``X | None``.
 
 Methods starting with ``_`` are helpers, not tools. Methods must validate their
-input *before* mutating state, so a rejected call leaves the environment as it was.
+input *before* mutating state, so a rejected call leaves the environment as it was. Refuse a call by
+raising :class:`ToolRejectedError`.
 
 All state lives in ``self.state``, ideally a dataclass: test case expectations
 receive it, and :meth:`Environment.snapshot` serializes it.
@@ -38,14 +39,32 @@ from collections.abc import Callable, Mapping
 from dataclasses import dataclass
 from typing import Any, ClassVar, Generic, Literal, TypeVar
 
-__all__ = ["ABSENT", "Environment", "ToolArg", "ToolCallError", "ToolSpec", "diff"]
+__all__ = [
+    "ABSENT",
+    "Environment",
+    "ToolArg",
+    "ToolCallError",
+    "ToolRejectedError",
+    "ToolSchemaError",
+    "ToolSpec",
+    "diff",
+]
 
 S = TypeVar("S")
 
 
 class ToolCallError(Exception):
-    """A call the environment rejected: unknown function, bad arguments or an
-    action the current state does not allow (e.g. an unknown room)."""
+    """A function call that could not be executed. Catch this for both kinds."""
+
+
+class ToolSchemaError(ToolCallError):
+    """The call does not match the schema: unknown function, missing or unknown
+    arguments, wrong types or values outside an enum. Raised by the library."""
+
+
+class ToolRejectedError(ToolCallError):
+    """The call matches the schema but the environment refuses it, e.g. an
+    unknown room or a value out of range. Raised by environments."""
 
 
 _JSON_TYPES: dict[type, str] = {
@@ -122,11 +141,11 @@ class ToolArg:
         else:
             ok = isinstance(value, self.type) and not isinstance(value, bool)
         if not ok:
-            raise ToolCallError(
+            raise ToolSchemaError(
                 f"argument {self.name!r} must be {_JSON_TYPES[self.type]}, got {value!r}"
             )
         if self.options is not None and value not in self.options:
-            raise ToolCallError(
+            raise ToolSchemaError(
                 f"argument {self.name!r} must be one of {list(self.options)}, got {value!r}"
             )
         return value
@@ -178,14 +197,18 @@ class ToolSpec:
             },
         }
 
+    def openai_schema(self) -> dict[str, Any]:
+        """Schema in the format of the OpenAI chat completions ``tools`` parameter."""
+        return {"type": "function", "function": self.json_schema()}
+
     def bind(self, arguments: Mapping[str, Any]) -> dict[str, Any]:
         """Validate raw call arguments and return them as keyword arguments."""
         unknown = set(arguments) - set(self.args)
         if unknown:
-            raise ToolCallError(f"{self.name}: unknown argument(s) {sorted(unknown)}")
+            raise ToolSchemaError(f"{self.name}: unknown argument(s) {sorted(unknown)}")
         missing = [n for n, a in self.args.items() if a.required and n not in arguments]
         if missing:
-            raise ToolCallError(f"{self.name}: missing argument(s) {missing}")
+            raise ToolSchemaError(f"{self.name}: missing argument(s) {missing}")
         return {
             name: self.args[name].validate(value) for name, value in arguments.items()
         }
@@ -223,15 +246,16 @@ class Environment(Generic[S]):
     @classmethod
     def openai_tools(cls) -> list[dict[str, Any]]:
         """Tools in the format of the OpenAI chat completions ``tools`` parameter."""
-        return [
-            {"type": "function", "function": schema} for schema in cls.tool_schemas()
-        ]
+        return [spec.openai_schema() for spec in cls._tools.values()]
 
     def call(self, name: str, arguments: Mapping[str, Any] | None = None) -> Any:
-        """Execute one function call. Raises :class:`ToolCallError` if rejected."""
+        """Execute one function call.
+
+        Raises :class:`ToolSchemaError` or :class:`ToolRejectedError`.
+        """
         spec = self._tools.get(name)
         if spec is None:
-            raise ToolCallError(f"unknown function {name!r}")
+            raise ToolSchemaError(f"unknown function {name!r}")
         return getattr(self, name)(**spec.bind(arguments or {}))
 
     def snapshot(self) -> dict[str, Any]:
