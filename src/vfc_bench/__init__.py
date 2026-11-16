@@ -2,7 +2,40 @@
 
 __version__ = "0.1.0"
 
-__all__ = ["__version__"]
+from vfc_bench.dataset import (
+    CheckResult,
+    Expectation,
+    Recording,
+    TestCase,
+    list_test_cases,
+    load_test_case,
+    load_test_cases,
+)
+from vfc_bench.environment import (
+    ABSENT,
+    Environment,
+    ToolArg,
+    ToolCallError,
+    ToolSpec,
+    diff,
+)
+
+__all__ = [
+    "ABSENT",
+    "CheckResult",
+    "Environment",
+    "Expectation",
+    "Recording",
+    "TestCase",
+    "ToolArg",
+    "ToolCallError",
+    "ToolSpec",
+    "__version__",
+    "diff",
+    "list_test_cases",
+    "load_test_case",
+    "load_test_cases",
+]
 
 
 import time
